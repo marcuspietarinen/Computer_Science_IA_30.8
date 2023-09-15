@@ -7,6 +7,9 @@ public class AddHomeworkView extends JFrame {
     private HomeworkModel model;
     private JTextField taskField;
     private JTextField deadlineField;
+    private JTextField deleteField;
+    private JTextField editField;
+    private JTextField toBeEditedField;
     private JComboBox<String> typeComboBox;
     private JSpinner importanceSpinner;
 
@@ -22,7 +25,7 @@ public class AddHomeworkView extends JFrame {
         JLabel taskLabel = new JLabel("Task:");
         taskField = new JTextField(20);
 
-        JLabel deadlineLabel = new JLabel("Deadline:");
+        JLabel deadlineLabel = new JLabel("Deadline: (dd-MM-yyyy)");
         deadlineField = new JTextField(20);
 
         JLabel typeLabel = new JLabel("Type:");
@@ -33,6 +36,29 @@ public class AddHomeworkView extends JFrame {
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 5, 1);
         importanceSpinner = new JSpinner(spinnerModel);
 
+        JLabel deleteLabel = new JLabel("Delete task: (write the name of the task you want to delete)");
+        deleteField = new JTextField(20);
+
+        JLabel toBeEditedLabel = new JLabel("Reschedule task: (write the name of the task you want to reschedule)");
+        JLabel editLabel = new JLabel ("Enter new deadline: (dd-MM-yyyy)");
+        editField = new JTextField(20);
+        toBeEditedField = new JTextField(20);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                String toBeDeleted = deleteField.getText();
+                for (int i = 0; i < model.getTasks().size(); i++)
+                {
+                    if (toBeDeleted.equals(model.getTasks().get(i).getTask()))
+                    {
+                        model.getTasks().remove(model.getTasks().get(i));
+                    }
+                }
+                deleteField.setText("");
+            }
+        });
+
         JButton addButton = new JButton("Add");
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -41,10 +67,30 @@ public class AddHomeworkView extends JFrame {
                 String type = (String) typeComboBox.getSelectedItem();
                 int importance = (int) importanceSpinner.getValue();
                 model.addTask(new HomeworkTask(task, deadline, type, importance));
+                //controller.addTask(...) <- is what you want instead of the line above
+
                 taskField.setText("");
                 deadlineField.setText("");
                 typeComboBox.setSelectedIndex(0);
                 importanceSpinner.setValue(1);
+            }
+        });
+
+        JButton editButton = new JButton("Reschedule");
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String toBeRescheduled = toBeEditedField.getText();
+                String newDeadline = editField.getText();
+                for (int i = 0; i < model.getTasks().size(); i++)
+                {
+                    if (toBeRescheduled.equals(model.getTasks().get(i).getTask()))
+                    {
+                        model.addTask(new HomeworkTask(model.getTasks().get(i).getTask(), newDeadline, model.getTasks().get(i).getType(), model.getTasks().get(i).getImportance()));
+                        model.getTasks().remove(model.getTasks().get(i));
+                    }
+                }
+                toBeEditedField.setText("");
+                editField.setText("");
             }
         });
 
@@ -58,6 +104,14 @@ public class AddHomeworkView extends JFrame {
         panel.add(importanceSpinner);
         panel.add(new JLabel());
         panel.add(addButton);
+        panel.add(deleteLabel);
+        panel.add(deleteField);
+        panel.add(deleteButton);
+        panel.add(toBeEditedLabel);
+        panel.add(toBeEditedField);
+        panel.add(editLabel);
+        panel.add(editField);
+        panel.add(editButton);
 
         add(panel);
         setVisible(true);
@@ -73,7 +127,29 @@ public class AddHomeworkView extends JFrame {
                 listView.setVisible(true);
             }
         });
+
+        JMenuItem calendarViewItem = new JMenuItem("Calendar");
+        calendarViewItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CalendarView calendarView = new CalendarView(model);
+                setVisible(false);
+                calendarView.setVisible(true);
+            }
+        });
+
+        JMenuItem allTasksItem = new JMenuItem("All Tasks");
+        allTasksItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AllTasks allTasks = new AllTasks(model);
+                setVisible(false);
+                allTasks.setVisible(true);
+            }
+        });
+
+
         switchMenu.add(listViewItem);
+        switchMenu.add(calendarViewItem);
+        switchMenu.add(allTasksItem);
         menuBar.add(switchMenu);
         setJMenuBar(menuBar);
 
