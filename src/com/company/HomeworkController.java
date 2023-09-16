@@ -10,19 +10,22 @@ import java.util.List;
 
 public class HomeworkController {
     private HomeworkModel model;
+    private HomeworkTask task;
     private AddHomeworkView addView;
     private HomeworkListView listView;
     private CalendarView calendarView;
-    //private AllTasks allTasks;
+    private AllTasks allTasks;
 
-    public HomeworkController(HomeworkModel model, AddHomeworkView addView, HomeworkListView listView, CalendarView calendarView /*, AllTasks allTasks*/) {
+    public HomeworkController(HomeworkModel model, AddHomeworkView addView, HomeworkListView listView, CalendarView calendarView, AllTasks allTasks) {
         this.model = model;
         this.addView = addView;
         this.listView = listView;
         this.calendarView = calendarView;
-        //this.allTasks = allTasks;
+        this.allTasks = allTasks;
 
-        String fname = "data/model.ser";
+
+
+       /* String fname = "data/model.ser";
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fname))) {
             List<HomeworkTask> tasks = new ArrayList<>(model.getTasks());
             out.writeObject(tasks);
@@ -39,7 +42,7 @@ public class HomeworkController {
 
         catch (Exception e) {
             System.out.println(e);
-        }
+        } */
 
 
         addView.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -52,6 +55,13 @@ public class HomeworkController {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 calendarView.updateCalendar();
+            }
+        });
+
+        addView.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                allTasks.updateTasks();
             }
         });
     }

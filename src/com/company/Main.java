@@ -8,6 +8,7 @@ package com.company;
 //  INSTEAD, View has reference to controller and is able to call functions on controller.
 //  AND, Controller has reference to model and is able to call functions on model.
 //3. Think of every time you create something new.
+//4. Class diagrams and UI diagrams.
 
 public class Main {
 
@@ -15,8 +16,8 @@ public class Main {
         HomeworkModel model = new HomeworkModel();
         AddHomeworkView addView = new AddHomeworkView(model);
         HomeworkListView listView = new HomeworkListView(model);
-        CalendarView calendarView = new CalendarView(model);
+        //CalendarView calendarView = new CalendarView(model);
         //AllTasks allTasks = new AllTasks(model);
-        HomeworkController controller = new HomeworkController(model, addView, listView, calendarView);
+        HomeworkController controller = new HomeworkController(model, addView, listView /*,calendarView, allTasks*/);
     }
 }
