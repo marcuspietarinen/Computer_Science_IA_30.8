@@ -19,7 +19,7 @@ week would change automatically every 7 days.
  */
 
 public class CalendarView extends JFrame {
-    private HomeworkModel model;
+    private HomeworkController controller;
     private LocalDate startDate;
     private JTextArea monday;
     private JTextArea tuesday;
@@ -29,24 +29,32 @@ public class CalendarView extends JFrame {
     private JTextArea saturday;
     private JTextArea sunday;
 
-    public CalendarView (HomeworkModel model) {
+    public CalendarView (HomeworkController controller) {
         super("Calendar");
-        this.model = model;
+        this.controller = controller;
+
         startDate = LocalDate.now();
         monday = new JTextArea(15, 10);
         monday.setEditable(false);
+        monday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         tuesday = new JTextArea(15, 10);
         tuesday.setEditable(false);
+        tuesday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         wednesday = new JTextArea(15, 10);
         wednesday.setEditable(false);
+        wednesday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         thursday = new JTextArea(15, 10);
         thursday.setEditable(false);
+        thursday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         friday = new JTextArea(15, 10);
         friday.setEditable(false);
+        friday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         saturday = new JTextArea(15, 10);
         saturday.setEditable(false);
+        saturday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         sunday = new JTextArea(15,10);
         sunday.setEditable(false);
+        sunday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         JPanel calendarPanel = new JPanel();
 
@@ -103,7 +111,7 @@ public class CalendarView extends JFrame {
         prevWeekButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startDate = startDate.minusWeeks(1);
-                updateCalendar();
+                //updateCalendar();
             }
         });
 
@@ -111,7 +119,7 @@ public class CalendarView extends JFrame {
         nextWeekButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startDate = startDate.plusWeeks(1);
-                updateCalendar();
+                //updateCalendar();
             }
         });
         JPanel ButtonPanel = new JPanel();
@@ -125,18 +133,19 @@ public class CalendarView extends JFrame {
         JMenuItem addViewMenuItem = new JMenuItem("Add Homework");
         addViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddHomeworkView addView = new AddHomeworkView(model);
+                //AddHomeworkView addView = new AddHomeworkView(model);
+                //controller.toggleAddHomeworkView();
                 setVisible(false);
-                addView.setVisible(true);
+                //addView.setVisible(true);
             }
         });
         switchMenu.add(addViewMenuItem);
         JMenuItem listViewMenuItem = new JMenuItem("Homework List");
         listViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                HomeworkListView listView = new HomeworkListView(model);
-                setVisible(false);
-                listView.setVisible(true);
+                //HomeworkListView listView = new HomeworkListView(model);
+                controller.toggleListView();
+                //listView.setVisible(true);
             }
         });
 
@@ -153,7 +162,7 @@ public class CalendarView extends JFrame {
     }
     public void updateCalendar() {
         // copy the listview way to make tasks visible;
-        HomeworkTask[] realTasks = model.sortByDeadline().toArray(new HomeworkTask[model.sortByDeadline().size()]);
+        HomeworkTask[] realTasks = controller.sortByDeadline().toArray(new HomeworkTask[controller.sortByDeadline().size()]);
         LocalDate[] localDates = new LocalDate[realTasks.length];
 
         StringBuilder sbMon = new StringBuilder();

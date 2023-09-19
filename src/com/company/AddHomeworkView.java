@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AddHomeworkView extends JFrame {
-    private HomeworkModel model;
+    private HomeworkController controller;
     private JTextField taskField;
     private JTextField deadlineField;
     private JTextField deleteField;
@@ -13,8 +13,8 @@ public class AddHomeworkView extends JFrame {
     private JComboBox<String> typeComboBox;
     private JSpinner importanceSpinner;
 
-    public AddHomeworkView(HomeworkModel model) {
-        this.model = model;
+    public AddHomeworkView(HomeworkController controller) {
+        this.controller = controller;
 
         setTitle("Add Homework");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,14 +48,17 @@ public class AddHomeworkView extends JFrame {
         deleteButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 String toBeDeleted = deleteField.getText();
-                for (int i = 0; i < model.getTasks().size(); i++)
+                for (int i = 0; i < controller.getTasks().size(); i++)
                 {
-                    if (toBeDeleted.equals(model.getTasks().get(i).getTask()))
+                    if (toBeDeleted.equals(controller.getTasks().get(i).getTask()))
                     {
-                        model.getTasks().remove(model.getTasks().get(i));
+                        controller.getTasks().remove(controller.getTasks().get(i));
                     }
                 }
                 deleteField.setText("");
+                controller.updateListView();
+                controller.updateCalendar();
+                controller.updateAllTasks();
             }
         });
 
@@ -66,8 +69,13 @@ public class AddHomeworkView extends JFrame {
                 String deadline = deadlineField.getText();
                 String type = (String) typeComboBox.getSelectedItem();
                 int importance = (int) importanceSpinner.getValue();
-                model.addTask(new HomeworkTask(task, deadline, type, importance));
+                controller.addTask(new HomeworkTask(task, deadline, type, importance));
                 //controller.addTask(...) <- is what you want instead of the line above
+//                controller.updateAllViews();
+                controller.updateListView();
+                controller.updateCalendar();
+                controller.updateAllTasks();
+//                controller.updateOtherView();
 
                 taskField.setText("");
                 deadlineField.setText("");
@@ -81,16 +89,19 @@ public class AddHomeworkView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String toBeRescheduled = toBeEditedField.getText();
                 String newDeadline = editField.getText();
-                for (int i = 0; i < model.getTasks().size(); i++)
+                for (int i = 0; i < controller.getTasks().size(); i++)
                 {
-                    if (toBeRescheduled.equals(model.getTasks().get(i).getTask()))
+                    if (toBeRescheduled.equals(controller.getTasks().get(i).getTask()))
                     {
-                        model.addTask(new HomeworkTask(model.getTasks().get(i).getTask(), newDeadline, model.getTasks().get(i).getType(), model.getTasks().get(i).getImportance()));
-                        model.getTasks().remove(model.getTasks().get(i));
+                        controller.addTask(new HomeworkTask(controller.getTasks().get(i).getTask(), newDeadline, controller.getTasks().get(i).getType(), controller.getTasks().get(i).getImportance()));
+                        controller.getTasks().remove(controller.getTasks().get(i));
                     }
                 }
                 toBeEditedField.setText("");
                 editField.setText("");
+                controller.updateListView();
+                controller.updateCalendar();
+                controller.updateAllTasks();
             }
         });
 
@@ -122,27 +133,22 @@ public class AddHomeworkView extends JFrame {
         JMenuItem listViewItem = new JMenuItem("Homework List");
         listViewItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                HomeworkListView listView = new HomeworkListView(model);
-                setVisible(false);
-                listView.setVisible(true);
+                controller.toggleListView();
+                //controller.toggleAddHomeworkView();
             }
         });
 
         JMenuItem calendarViewItem = new JMenuItem("Calendar");
         calendarViewItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CalendarView calendarView = new CalendarView(model);
-                setVisible(false);
-                calendarView.setVisible(true);
+                controller.toggleCalendarView();
             }
         });
 
         JMenuItem allTasksItem = new JMenuItem("All Tasks");
         allTasksItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AllTasks allTasks = new AllTasks(model);
-                setVisible(false);
-                allTasks.setVisible(true);
+                controller.toggleAllTasks();
             }
         });
 

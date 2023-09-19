@@ -13,11 +13,17 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
+        // MODEL
         HomeworkModel model = new HomeworkModel();
-        AddHomeworkView addView = new AddHomeworkView(model);
-        HomeworkListView listView = new HomeworkListView(model);
-        //CalendarView calendarView = new CalendarView(model);
-        //AllTasks allTasks = new AllTasks(model);
-        HomeworkController controller = new HomeworkController(model, addView, listView /*,calendarView, allTasks*/);
+
+        // CONTROLLER
+        HomeworkController controller = new HomeworkController(model);
+
+        // VIEW
+        AddHomeworkView addView = new AddHomeworkView(controller);
+        HomeworkListView listView = new HomeworkListView(controller);
+        CalendarView calendarView = new CalendarView(controller);
+        AllTasks allTasks = new AllTasks(controller);
+
     }
 }

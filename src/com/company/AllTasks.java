@@ -4,10 +4,10 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class AllTasks extends JFrame {
-    private HomeworkModel model;
+    private HomeworkController controller;
 
-    public AllTasks(HomeworkModel model) {
-        this.model = model;
+    public AllTasks(HomeworkController controller) {
+        this.controller = controller;
 
         setTitle("All tasks:");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,8 +154,8 @@ public class AllTasks extends JFrame {
         updateTasks();
     }
     public void updateTasks() {
-        HomeworkTask[] tasks = model.getTasks().toArray(new HomeworkTask[model.getTasks().size()]);
-        int[] urgencies = Arrays.stream(model.urgencyOfATask()).toArray();
+        HomeworkTask[] tasks = controller.getTasks().toArray(new HomeworkTask[controller.getTasks().size()]);
+        int[] urgencies = Arrays.stream(controller.urgencyOfATask()).toArray();
         for (int i = 0; i < tasks.length; i++)
         {
             StringBuilder s15 = new StringBuilder();

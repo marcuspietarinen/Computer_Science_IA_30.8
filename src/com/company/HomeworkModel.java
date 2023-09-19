@@ -9,6 +9,7 @@ import java.util.List;
 // make other windows work
 
 public class HomeworkModel implements Serializable {
+    private HomeworkController controller;
     private List<HomeworkTask> tasks;
 
     public HomeworkModel() {
@@ -112,7 +113,7 @@ public class HomeworkModel implements Serializable {
                 }
             }
         }
-        for (int k = qualificationValues.length - 1; k < qualificationValues.length - 3; k--)
+        for (int k = qualificationValues.length - 1; k >= 0 && k >= qualificationValues.length - 3; k--)
         {
             finalTasks.add(toBeQualified[k]);
         }

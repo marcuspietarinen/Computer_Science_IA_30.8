@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class HomeworkListView extends JFrame {
-    private HomeworkModel model;
+    private HomeworkController controller;
     private JTextArea forTomorrowArea;
     private JTextArea otherSuggestionsArea;
     private JTextArea longTermProjectsArea;
 
 
-    public HomeworkListView(HomeworkModel model) {
-        this.model = model;
+    public HomeworkListView(HomeworkController controller) {
+        this.controller = controller;
 
         setTitle("Homework List");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,9 +51,9 @@ public class HomeworkListView extends JFrame {
         JMenuItem addViewMenuItem = new JMenuItem("Add Homework");
         addViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddHomeworkView addView = new AddHomeworkView(model);
+                //AddHomeworkView addView = new AddHomeworkView(model);
                 setVisible(false);
-                addView.setVisible(true);
+                //addView.setVisible(true);
             }
         });
         switchMenu.add(addViewMenuItem);
@@ -67,14 +67,14 @@ public class HomeworkListView extends JFrame {
 
     public void updateTaskList() {
 
-        List<HomeworkTask> dueTomorrow = model.forTomorrow();
+        List<HomeworkTask> dueTomorrow = controller.forTomorrow();
         StringBuilder sb1 = new StringBuilder();
 
         //HomeworkTask[] suggestions = model.doNow();
-        List<HomeworkTask> suggestions = model.doNow();
+        List<HomeworkTask> suggestions = controller.doNow();
         StringBuilder sb2 = new StringBuilder();
 
-        List<HomeworkTask> dontForgetThese = model.longTermProjects();
+        List<HomeworkTask> dontForgetThese = controller.longTermProjects();
         StringBuilder sb3 = new StringBuilder();
 
         for (HomeworkTask task : dueTomorrow) {
