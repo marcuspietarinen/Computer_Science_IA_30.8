@@ -1,6 +1,8 @@
 package com.company;
 
-public class HomeworkTask {
+import java.io.Serializable;
+
+public class HomeworkTask implements Serializable{
     private String task;
     private String deadline;
     private String type;

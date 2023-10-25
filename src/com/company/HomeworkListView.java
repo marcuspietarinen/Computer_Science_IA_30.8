@@ -21,21 +21,17 @@ public class HomeworkListView extends JFrame {
         setSize(1000, 625);
 
         JPanel panel = new JPanel();
-        //setLayout(null);
         JLabel forTomorrowLabel = new JLabel("For Tomorrow");
         forTomorrowArea = new JTextArea(10, 20);
         forTomorrowArea.setEditable(false);
-        //forTomorrowArea.setBounds(50, 312, 300, 262);
 
         JLabel otherSuggestionsLabel = new JLabel("Other Suggestions");
         otherSuggestionsArea = new JTextArea(10, 20);
         otherSuggestionsArea.setEditable(false);
-        //otherSuggestionsArea.setBounds(350, 312, 300, 262);
 
         JLabel longTermProjectsLabel = new JLabel("Long-Term Projects");
         longTermProjectsArea = new JTextArea(10, 20);
         longTermProjectsArea.setEditable(false);
-        //longTermProjectsArea.setBounds(650, 312, 300, 262);
 
         panel.add(forTomorrowLabel);
         panel.add(forTomorrowArea);
@@ -45,18 +41,37 @@ public class HomeworkListView extends JFrame {
         panel.add(longTermProjectsArea);
 
         add(panel);
+
         // Create the menu bar and menu items
         JMenuBar menuBar = new JMenuBar();
         JMenu switchMenu = new JMenu("Menu");
         JMenuItem addViewMenuItem = new JMenuItem("Add Homework");
         addViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //AddHomeworkView addView = new AddHomeworkView(model);
-                setVisible(false);
-                //addView.setVisible(true);
+                controller.toggleAddHomeworkView();
+                controller.toggleListView();
             }
         });
+
+        JMenuItem calendarViewItem = new JMenuItem("Calendar");
+        calendarViewItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleCalendarView();
+                controller.toggleListView();
+            }
+        });
+
+        JMenuItem allTasksItem = new JMenuItem("All Tasks");
+        allTasksItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleAllTasks();
+                controller.toggleListView();
+            }
+        });
+
         switchMenu.add(addViewMenuItem);
+        switchMenu.add(calendarViewItem);
+        switchMenu.add(allTasksItem);
         menuBar.add(switchMenu);
         setJMenuBar(menuBar);
 
@@ -70,7 +85,6 @@ public class HomeworkListView extends JFrame {
         List<HomeworkTask> dueTomorrow = controller.forTomorrow();
         StringBuilder sb1 = new StringBuilder();
 
-        //HomeworkTask[] suggestions = model.doNow();
         List<HomeworkTask> suggestions = controller.doNow();
         StringBuilder sb2 = new StringBuilder();
 
@@ -81,16 +95,10 @@ public class HomeworkListView extends JFrame {
             sb1.append(task.getTask()).append("\n");
         }
 
-        //for (int i = 0; i < model.doNow().length; i++)
-        for (HomeworkTask task : suggestions)
-        {
-            //sb2.append(suggestions[i].getTask()).append("\n");
+        for (HomeworkTask task : suggestions) {
             sb2.append(task.getTask()).append("\n");
         }
 
-        /*for (HomeworkTask task : suggestions) {
-            sb2.append(task.getTask()).append("\n");
-        }*/
 
         for (HomeworkTask task : dontForgetThese) {
             sb3.append(task.getTask()).append(task.getDeadline()).append("\n");

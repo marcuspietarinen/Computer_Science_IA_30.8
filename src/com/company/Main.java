@@ -19,11 +19,12 @@ public class Main {
         // CONTROLLER
         HomeworkController controller = new HomeworkController(model);
 
-        // VIEW
-        AddHomeworkView addView = new AddHomeworkView(controller);
-        HomeworkListView listView = new HomeworkListView(controller);
-        CalendarView calendarView = new CalendarView(controller);
-        AllTasks allTasks = new AllTasks(controller);
-
+        try{
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {controller.saveTasks();}));
+        }
+        catch (Exception e){
+            System.out.println("got exception " + e);
+            System.exit (1);
+        }
     }
 }

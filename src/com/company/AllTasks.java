@@ -1,10 +1,13 @@
 package com.company;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 public class AllTasks extends JFrame {
     private HomeworkController controller;
+    private JTextArea[] textAreas;
 
     public AllTasks(HomeworkController controller) {
         this.controller = controller;
@@ -15,135 +18,50 @@ public class AllTasks extends JFrame {
 
         JPanel panel = new JPanel(new BorderLayout());
         JPanel taskPanel = new JPanel(new GridLayout(5, 5));
+        textAreas = new JTextArea[25];
 
-        JLabel urgency = new JLabel("                                                                                                                             Urgency");
+        for (int i = 0; i < 25; i++)
+        {
+            textAreas[i] = new JTextArea(15, 15);
+            textAreas[i].setEditable(false);
+            textAreas[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            taskPanel.add(textAreas[i]);
+        }
+
+        JLabel urgency = new JLabel("                                                                                                                           Urgency");
         JLabel importance = new JLabel ("Importance");
 
-        JTextArea onefive = new JTextArea(15,15);
-        onefive.setEditable(false);
-        onefive.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        JMenuBar menuBar = new JMenuBar();
+        JMenu switchMenu = new JMenu("Menu");
+        JMenuItem addViewMenuItem = new JMenuItem("Add Homework");
+        addViewMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleAddHomeworkView();
+                controller.toggleAllTasks();
+            }
+        });
 
-        JTextArea twofive = new JTextArea(15,15);
-        twofive.setEditable(false);
-        twofive.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        JMenuItem listViewItem = new JMenuItem("Homework List");
+        listViewItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleListView();
+                controller.toggleAllTasks();
+            }
+        });
 
-        JTextArea threefive = new JTextArea(15,15);
-        threefive.setEditable(false);
-        threefive.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        JMenuItem calendarViewItem = new JMenuItem("Calendar");
+        calendarViewItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleCalendarView();
+                controller.toggleAllTasks();
+            }
+        });
 
-        JTextArea fourfive = new JTextArea(15,15);
-        fourfive.setEditable(false);
-        fourfive.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fivefive = new JTextArea(15,15);
-        fivefive.setEditable(false);
-        fivefive.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea onefour = new JTextArea(15,15);
-        onefour.setEditable(false);
-        onefour.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea twofour = new JTextArea(15,15);
-        twofour.setEditable(false);
-        twofour.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea threefour = new JTextArea(15,15);
-        threefour.setEditable(false);
-        threefour.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fourfour = new JTextArea(15,15);
-        fourfour.setEditable(false);
-        fourfour.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fivefour = new JTextArea(15,15);
-        fivefour.setEditable(false);
-        fivefour.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea onethree = new JTextArea(15,15);
-        onethree.setEditable(false);
-        onethree.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea twothree = new JTextArea(15,15);
-        twothree.setEditable(false);
-        twothree.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea threethree = new JTextArea(15,15);
-        threethree.setEditable(false);
-        threethree.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fourthree = new JTextArea(15,15);
-        fourthree.setEditable(false);
-        fourthree.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fivethree = new JTextArea(15,15);
-        fivethree.setEditable(false);
-        fivethree.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea onetwo = new JTextArea(15,15);
-        onetwo.setEditable(false);
-        onetwo.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea twotwo = new JTextArea(15,15);
-        twotwo.setEditable(false);
-        twotwo.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea threetwo = new JTextArea(15,15);
-        threetwo.setEditable(false);
-        threetwo.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fourtwo = new JTextArea(15,15);
-        fourtwo.setEditable(false);
-        fourtwo.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fivetwo = new JTextArea(15,15);
-        fivetwo.setEditable(false);
-        fivetwo.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea oneone = new JTextArea(15,15);
-        oneone.setEditable(false);
-        oneone.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea twoone = new JTextArea(15,15);
-        twoone.setEditable(false);
-        twoone.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea threeone = new JTextArea(15,15);
-        threeone.setEditable(false);
-        threeone.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fourone = new JTextArea(15,15);
-        fourone.setEditable(false);
-        fourone.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        JTextArea fiveone = new JTextArea(15,15);
-        fiveone.setEditable(false);
-        fiveone.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-        taskPanel.add(onefive);
-        taskPanel.add(twofive);
-        taskPanel.add(threefive);
-        taskPanel.add(fourfive);
-        taskPanel.add(fivefive);
-        taskPanel.add(onefour);
-        taskPanel.add(twofour);
-        taskPanel.add(threefour);
-        taskPanel.add(fourfour);
-        taskPanel.add(fivefour);
-        taskPanel.add(onethree);
-        taskPanel.add(twothree);
-        taskPanel.add(threethree);
-        taskPanel.add(fourthree);
-        taskPanel.add(fivethree);
-        taskPanel.add(onetwo);
-        taskPanel.add(twotwo);
-        taskPanel.add(threetwo);
-        taskPanel.add(fourtwo);
-        taskPanel.add(fivetwo);
-        taskPanel.add(oneone);
-        taskPanel.add(twoone);
-        taskPanel.add(threeone);
-        taskPanel.add(fourone);
-        taskPanel.add(fiveone);
+        switchMenu.add(addViewMenuItem);
+        switchMenu.add(listViewItem);
+        switchMenu.add(calendarViewItem);
+        menuBar.add(switchMenu);
+        setJMenuBar(menuBar);
 
         panel.add(taskPanel, BorderLayout.CENTER);
         panel.add(urgency, BorderLayout.SOUTH);
@@ -154,36 +72,38 @@ public class AllTasks extends JFrame {
         updateTasks();
     }
     public void updateTasks() {
+
         HomeworkTask[] tasks = controller.getTasks().toArray(new HomeworkTask[controller.getTasks().size()]);
         int[] urgencies = Arrays.stream(controller.urgencyOfATask()).toArray();
+
+        StringBuilder s15 = new StringBuilder();
+        StringBuilder s25 = new StringBuilder();
+        StringBuilder s35 = new StringBuilder();
+        StringBuilder s45 = new StringBuilder();
+        StringBuilder s55 = new StringBuilder();
+        StringBuilder s14 = new StringBuilder();
+        StringBuilder s24 = new StringBuilder();
+        StringBuilder s34 = new StringBuilder();
+        StringBuilder s44 = new StringBuilder();
+        StringBuilder s54 = new StringBuilder();
+        StringBuilder s13 = new StringBuilder();
+        StringBuilder s23 = new StringBuilder();
+        StringBuilder s33 = new StringBuilder();
+        StringBuilder s43 = new StringBuilder();
+        StringBuilder s53 = new StringBuilder();
+        StringBuilder s12 = new StringBuilder();
+        StringBuilder s22 = new StringBuilder();
+        StringBuilder s32 = new StringBuilder();
+        StringBuilder s42 = new StringBuilder();
+        StringBuilder s52 = new StringBuilder();
+        StringBuilder s11 = new StringBuilder();
+        StringBuilder s21 = new StringBuilder();
+        StringBuilder s31 = new StringBuilder();
+        StringBuilder s41 = new StringBuilder();
+        StringBuilder s51 = new StringBuilder();
+
         for (int i = 0; i < tasks.length; i++)
         {
-            StringBuilder s15 = new StringBuilder();
-            StringBuilder s25 = new StringBuilder();
-            StringBuilder s35 = new StringBuilder();
-            StringBuilder s45 = new StringBuilder();
-            StringBuilder s55 = new StringBuilder();
-            StringBuilder s14 = new StringBuilder();
-            StringBuilder s24 = new StringBuilder();
-            StringBuilder s34 = new StringBuilder();
-            StringBuilder s44 = new StringBuilder();
-            StringBuilder s54 = new StringBuilder();
-            StringBuilder s13 = new StringBuilder();
-            StringBuilder s23 = new StringBuilder();
-            StringBuilder s33 = new StringBuilder();
-            StringBuilder s43 = new StringBuilder();
-            StringBuilder s53 = new StringBuilder();
-            StringBuilder s12 = new StringBuilder();
-            StringBuilder s22 = new StringBuilder();
-            StringBuilder s32 = new StringBuilder();
-            StringBuilder s42 = new StringBuilder();
-            StringBuilder s52 = new StringBuilder();
-            StringBuilder s11 = new StringBuilder();
-            StringBuilder s21 = new StringBuilder();
-            StringBuilder s31 = new StringBuilder();
-            StringBuilder s41 = new StringBuilder();
-            StringBuilder s51 = new StringBuilder();
-
             if(urgencies[i] == 5 && tasks[i].getImportance() == 5)
                 s55.append(tasks[i].getTask()).append("\n");
 
@@ -259,6 +179,38 @@ public class AllTasks extends JFrame {
             if(urgencies[i] == 1 && tasks[i].getImportance() == 1)
                 s11.append(tasks[i].getTask()).append("\n");
         }
+
+        /*for (int u = 0; u < tasks.length; u++)
+        {
+            for (int i = 0; i < tasks.length; i++)
+            {
+                textAreas[urgencies[u] - 1][tasks[i].getImportance() - 1].setText(s11.toString());
+            }
+        }*/
+        textAreas[4].setText(s55.toString());
+        textAreas[3].setText(s45.toString());
+        textAreas[2].setText(s35.toString());
+        textAreas[1].setText(s25.toString());
+        textAreas[0].setText(s15.toString());
+        textAreas[9].setText(s54.toString());
+        textAreas[8].setText(s44.toString());
+        textAreas[7].setText(s34.toString());
+        textAreas[6].setText(s24.toString());
+        textAreas[5].setText(s14.toString());
+        textAreas[14].setText(s53.toString());
+        textAreas[13].setText(s43.toString());
+        textAreas[12].setText(s33.toString());
+        textAreas[11].setText(s23.toString());
+        textAreas[10].setText(s13.toString());
+        textAreas[19].setText(s52.toString());
+        textAreas[18].setText(s42.toString());
+        textAreas[17].setText(s32.toString());
+        textAreas[16].setText(s22.toString());
+        textAreas[15].setText(s12.toString());
+        textAreas[14].setText(s51.toString());
+        textAreas[24].setText(s41.toString());
+        textAreas[23].setText(s31.toString());
+        textAreas[22].setText(s21.toString());
+        textAreas[21].setText(s11.toString());
     }
 }
-

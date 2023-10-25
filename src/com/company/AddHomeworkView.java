@@ -1,5 +1,6 @@
 package com.company;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,18 +19,21 @@ public class AddHomeworkView extends JFrame {
 
         setTitle("Add Homework");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1080, 720);
+        setSize(1600, 400);
 
         JPanel panel = new JPanel();
+        JPanel addPanel = new JPanel();
+        JPanel editPanel = new JPanel();
+        JPanel deletePanel = new JPanel();
 
         JLabel taskLabel = new JLabel("Task:");
         taskField = new JTextField(20);
 
-        JLabel deadlineLabel = new JLabel("Deadline: (dd-MM-yyyy)");
+        JLabel deadlineLabel = new JLabel("Deadline: (dd.MM.yyyy)");
         deadlineField = new JTextField(20);
 
         JLabel typeLabel = new JLabel("Type:");
-        String[] types = {"Homework", "Exam", "IA", "EE", "Other"};
+        String[] types = {"Homework", "Exam", "IA", "EE", "University Application"};
         typeComboBox = new JComboBox<>(types);
 
         JLabel importanceLabel = new JLabel("Importance:");
@@ -40,7 +44,7 @@ public class AddHomeworkView extends JFrame {
         deleteField = new JTextField(20);
 
         JLabel toBeEditedLabel = new JLabel("Reschedule task: (write the name of the task you want to reschedule)");
-        JLabel editLabel = new JLabel ("Enter new deadline: (dd-MM-yyyy)");
+        JLabel editLabel = new JLabel ("Enter new deadline: (dd.MM.yyyy)");
         editField = new JTextField(20);
         toBeEditedField = new JTextField(20);
 
@@ -105,24 +109,28 @@ public class AddHomeworkView extends JFrame {
             }
         });
 
-        panel.add(taskLabel);
-        panel.add(taskField);
-        panel.add(deadlineLabel);
-        panel.add(deadlineField);
-        panel.add(typeLabel);
-        panel.add(typeComboBox);
-        panel.add(importanceLabel);
-        panel.add(importanceSpinner);
-        panel.add(new JLabel());
-        panel.add(addButton);
-        panel.add(deleteLabel);
-        panel.add(deleteField);
-        panel.add(deleteButton);
-        panel.add(toBeEditedLabel);
-        panel.add(toBeEditedField);
-        panel.add(editLabel);
-        panel.add(editField);
-        panel.add(editButton);
+        addPanel.add(taskLabel);
+        addPanel.add(taskField);
+        addPanel.add(deadlineLabel);
+        addPanel.add(deadlineField);
+        addPanel.add(typeLabel);
+        addPanel.add(typeComboBox);
+        addPanel.add(importanceLabel);
+        addPanel.add(importanceSpinner);
+        //panel.add(new JLabel());
+        addPanel.add(addButton);
+        deletePanel.add(deleteLabel);
+        deletePanel.add(deleteField);
+        deletePanel.add(deleteButton);
+        editPanel.add(toBeEditedLabel);
+        editPanel.add(toBeEditedField);
+        editPanel.add(editLabel);
+        editPanel.add(editField);
+        editPanel.add(editButton);
+
+        panel.add(addPanel, BorderLayout.WEST);
+        panel.add(editPanel, BorderLayout.CENTER);
+        panel.add(deletePanel, BorderLayout.EAST);
 
         add(panel);
         setVisible(true);
@@ -134,7 +142,7 @@ public class AddHomeworkView extends JFrame {
         listViewItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.toggleListView();
-                //controller.toggleAddHomeworkView();
+                controller.toggleAddHomeworkView();
             }
         });
 
@@ -142,6 +150,7 @@ public class AddHomeworkView extends JFrame {
         calendarViewItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.toggleCalendarView();
+                controller.toggleAddHomeworkView();
             }
         });
 
@@ -149,6 +158,7 @@ public class AddHomeworkView extends JFrame {
         allTasksItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.toggleAllTasks();
+                controller.toggleAddHomeworkView();
             }
         });
 

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,52 +22,21 @@ week would change automatically every 7 days.
 public class CalendarView extends JFrame {
     private HomeworkController controller;
     private LocalDate startDate;
-    private JTextArea monday;
-    private JTextArea tuesday;
-    private JTextArea wednesday;
-    private JTextArea thursday;
-    private JTextArea friday;
-    private JTextArea saturday;
-    private JTextArea sunday;
+    private JTextArea[] weekdays;
 
     public CalendarView (HomeworkController controller) {
         super("Calendar");
         this.controller = controller;
 
         startDate = LocalDate.now();
-        monday = new JTextArea(15, 10);
-        monday.setEditable(false);
-        monday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        tuesday = new JTextArea(15, 10);
-        tuesday.setEditable(false);
-        tuesday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        wednesday = new JTextArea(15, 10);
-        wednesday.setEditable(false);
-        wednesday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        thursday = new JTextArea(15, 10);
-        thursday.setEditable(false);
-        thursday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        friday = new JTextArea(15, 10);
-        friday.setEditable(false);
-        friday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        saturday = new JTextArea(15, 10);
-        saturday.setEditable(false);
-        saturday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        sunday = new JTextArea(15,10);
-        sunday.setEditable(false);
-        sunday.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         JPanel calendarPanel = new JPanel();
-
-
-        setTitle("Calendar");
-        setSize(1000, 625);
-
-
 
         JPanel weekPanel = new JPanel();
         weekPanel.setLayout(new GridLayout(0, 7));
 
+        setTitle("Calendar");
+        setSize(1000, 625);
 
         JLabel mondayLabel = new JLabel("Monday");
         JLabel tuesdayLabel = new JLabel("Tuesday");
@@ -83,29 +53,19 @@ public class CalendarView extends JFrame {
         weekPanel.add(fridayLabel);
         weekPanel.add(saturdayLabel);
         weekPanel.add(sundayLabel);
-        weekPanel.add(monday);
-        weekPanel.add(tuesday);
-        weekPanel.add(wednesday);
-        weekPanel.add(thursday);
-        weekPanel.add(friday);
-        weekPanel.add(saturday);
-        weekPanel.add(sunday);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        weekdays = new JTextArea[7];
+        for (int i = 0; i < 7; i++)
+        {
+            weekdays[i] = new JTextArea(15, 10);
+            weekdays[i].setEditable(false);
+            weekdays[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            weekPanel.add(weekdays[i]);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate currentDate = startDate;
-        LocalDate baseDate = LocalDate.parse("28-08-2023", formatter);
-
-        /*JPanel dayPanel = new JPanel();
-        dayPanel.setLayout(new BorderLayout());
-
-        JLabel dateLabel = new JLabel(currentDate.format(formatter), JLabel.CENTER);
-        dayPanel.add(dateLabel, BorderLayout.NORTH);
-
-        JTextArea tasksArea = new JTextArea();
-        tasksArea.setPreferredSize(new Dimension(150,100));
-        tasksArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(tasksArea);
-        dayPanel.add(scrollPane, BorderLayout.CENTER); */
+        LocalDate baseDate = LocalDate.parse("28.08.2023", formatter);
 
         JButton prevWeekButton = new JButton("Previous Week");
         prevWeekButton.addActionListener(new ActionListener() {
@@ -133,26 +93,32 @@ public class CalendarView extends JFrame {
         JMenuItem addViewMenuItem = new JMenuItem("Add Homework");
         addViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //AddHomeworkView addView = new AddHomeworkView(model);
-                //controller.toggleAddHomeworkView();
-                setVisible(false);
-                //addView.setVisible(true);
+                controller.toggleAddHomeworkView();
+                controller.toggleCalendarView();
             }
         });
-        switchMenu.add(addViewMenuItem);
         JMenuItem listViewMenuItem = new JMenuItem("Homework List");
         listViewMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //HomeworkListView listView = new HomeworkListView(model);
                 controller.toggleListView();
-                //listView.setVisible(true);
+                controller.toggleCalendarView();
+            }
+        });
+
+        JMenuItem allTasksItem = new JMenuItem("All Tasks");
+        allTasksItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleAllTasks();
+                controller.toggleCalendarView();
             }
         });
 
         calendarPanel.add(ButtonPanel);
         calendarPanel.add(weekPanel);
         add(calendarPanel);
+        switchMenu.add(addViewMenuItem);
         switchMenu.add(listViewMenuItem);
+        switchMenu.add(allTasksItem);
         menuBar.add(switchMenu);
         setJMenuBar(menuBar);
         pack();
@@ -173,37 +139,40 @@ public class CalendarView extends JFrame {
         StringBuilder sbSat = new StringBuilder();
         StringBuilder sbSun = new StringBuilder();
 
+        for (int i = 0; i < realTasks.length; i++) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            localDates[i] = LocalDate.parse(realTasks[i].getDeadline(), formatter);
+        }
+
         for (int i = 0; i < realTasks.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            localDates[i] = LocalDate.parse(realTasks[i].getDeadline(), formatter);
-
-            if (localDates[i].getDayOfWeek().equals("Monday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.MONDAY))
                 sbMon.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
 
-            else if (localDates[i].getDayOfWeek().equals("Tuesday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.TUESDAY))
                 sbTue.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
 
-            else if (localDates[i].getDayOfWeek().equals("Wednesday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.WEDNESDAY))
                 sbWed.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
 
-            else if (localDates[i].getDayOfWeek().equals("Thursday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.THURSDAY))
                 sbThu.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
 
-            else if (localDates[i].getDayOfWeek().equals("Friday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.FRIDAY))
                 sbFri.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
-            else if (localDates[i].getDayOfWeek().equals("Saturday"))
+
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.SATURDAY))
                 sbSat.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
 
-            else if (localDates[i].getDayOfWeek().equals("Sunday"))
+            if (localDates[i].getDayOfWeek().equals(DayOfWeek.SUNDAY))
                 sbSun.append(realTasks[i].getTask()).append(realTasks[i].getDeadline()).append("\n");
         }
-        monday.setText(sbMon.toString());
-        tuesday.setText(sbTue.toString());
-        wednesday.setText(sbWed.toString());
-        thursday.setText(sbThu.toString());
-        friday.setText(sbFri.toString());
-        saturday.setText(sbSat.toString());
-        sunday.setText(sbSun.toString());
+        weekdays[0].setText(sbMon.toString());
+        weekdays[1].setText(sbTue.toString());
+        weekdays[2].setText(sbWed.toString());
+        weekdays[3].setText(sbThu.toString());
+        weekdays[4].setText(sbFri.toString());
+        weekdays[5].setText(sbSat.toString());
+        weekdays[6].setText(sbSun.toString());
     }
 }

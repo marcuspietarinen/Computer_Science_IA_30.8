@@ -20,12 +20,16 @@ public class HomeworkModel implements Serializable {
         tasks.add(task);
     }
 
+    public void setTasks(List<HomeworkTask> tasks) {
+        this.tasks = tasks;
+    }
+
     public void deleteTask() {
         HomeworkTask[] toBeDeleted = tasks.toArray(new HomeworkTask[tasks.size()]);
         LocalDate[] localDates = new LocalDate[toBeDeleted.length];
         for (int i = 0; i < toBeDeleted.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             localDates[i] = LocalDate.parse(toBeDeleted[i].getDeadline(), formatter);
         }
         for (int i = 0; i < toBeDeleted.length; i++)
@@ -46,7 +50,7 @@ public class HomeworkModel implements Serializable {
 
         for (int i = 0; i < toBeEvaluated.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             localDates[i] = LocalDate.parse(toBeEvaluated[i].getDeadline(), formatter);
         }
 
@@ -72,7 +76,7 @@ public class HomeworkModel implements Serializable {
 
         for (int i = 0; i < toBeEvaluated.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             localDates[i] = LocalDate.parse(toBeEvaluated[i].getDeadline(), formatter);
         }
 
@@ -126,7 +130,7 @@ public class HomeworkModel implements Serializable {
 
         for (int i = 0; i < toBeEvaluated.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             localDates[i] = LocalDate.parse(toBeEvaluated[i].getDeadline(), formatter);
         }
 
@@ -153,7 +157,7 @@ public class HomeworkModel implements Serializable {
 
         for (int i = 0; i < toBeSorted.length; i++)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             localDates[i] = LocalDate.parse(toBeSorted[i].getDeadline(), formatter);
         }
 
@@ -166,6 +170,7 @@ public class HomeworkModel implements Serializable {
             {
                 if (localDates[i - 1].isAfter(localDates[i]))
                 {
+                    swapLocalDate(localDates, i, i - 1);
                     swapHomeworktask(toBeSorted, i, i - 1);
                     changed = true;
                 }
@@ -184,7 +189,7 @@ public class HomeworkModel implements Serializable {
 
         for (int i = 0; i < toBeChecked.length; i++)
         {
-            if (toBeChecked[i].getType().equals("IA") || toBeChecked[i].getType().equals("EE"))
+            if (toBeChecked[i].getType().equals("IA") || toBeChecked[i].getType().equals("EE") || toBeChecked[i].getType().equals("University Application"))
             {
                 dontForgetThese.add(toBeChecked[i]);
             }
@@ -202,6 +207,13 @@ public class HomeworkModel implements Serializable {
     public static void swapInt (int[] arr, int i, int j)
     {
         int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    public static void swapLocalDate (LocalDate[] arr, int i, int j)
+    {
+        LocalDate tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
     }
